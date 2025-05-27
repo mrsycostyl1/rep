@@ -11,21 +11,25 @@
       background: radial-gradient(circle at center, #0f0f0f 0%, #000000 100%);
       font-family: 'Orbitron', sans-serif;
       color: #0ff;
-      overflow-x: hidden;
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
 
     .overlay {
-      min-height: 100vh;
+      flex: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 20px;
+      padding: 10px;
       text-align: center;
+      overflow: hidden;
     }
 
     h1 {
-      font-size: 2em;
-      margin: 20px;
+      font-size: 1.5em;
+      margin: 10px;
       text-shadow: 0 0 10px #0ff;
     }
 
@@ -33,11 +37,11 @@
       background: transparent;
       color: #0ff;
       border: 2px solid #0ff;
-      padding: 12px 24px;
-      border-radius: 10px;
-      font-size: 18px;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 16px;
       cursor: pointer;
-      margin: 10px;
+      margin: 5px;
       transition: all 0.3s;
       text-shadow: 0 0 5px #0ff;
     }
@@ -52,26 +56,33 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      margin-top: 20px;
-      gap: 10px;
+      margin-top: 10px;
+      gap: 6px;
       opacity: 0;
       transition: opacity 0.6s ease;
+      max-height: 45vh;
+      overflow-y: auto;
     }
 
-    .visible {
+    .months.visible, .days.visible {
       opacity: 1;
     }
 
+    .months button, .days button {
+      flex: 1 0 22%;
+      max-width: 70px;
+    }
+
     .message-box {
-      margin-top: 30px;
-      padding: 15px 20px;
+      margin-top: 10px;
+      padding: 10px;
       background: rgba(0, 255, 255, 0.1);
       border: 1px solid #0ff;
       border-radius: 10px;
       color: #0ff;
       text-shadow: 0 0 5px #0ff;
-      max-width: 90%;
-      font-size: 1.2em;
+      max-width: 95%;
+      font-size: 1em;
       opacity: 0;
       transition: opacity 0.6s ease;
     }
@@ -93,8 +104,8 @@
 
     .particle {
       position: absolute;
-      width: 6px;
-      height: 6px;
+      width: 4px;
+      height: 4px;
       background: #0ff;
       border-radius: 50%;
       opacity: 0.5;
@@ -112,16 +123,6 @@
       100% {
         transform: translateY(-10vh) scale(1.5);
         opacity: 0;
-      }
-    }
-
-    @media (max-width: 600px) {
-      button {
-        font-size: 16px;
-        padding: 8px 14px;
-      }
-      .message-box {
-        font-size: 1em;
       }
     }
   </style>
@@ -233,7 +234,7 @@
       }
     }
 
-    // Generate floating particles
+    // Floating particles
     const particleContainer = document.getElementById("particles");
     for (let i = 0; i < 30; i++) {
       const dot = document.createElement("div");
