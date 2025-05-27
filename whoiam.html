@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Beautiful Sci-Fi Rose Intro</title>
+  <title>Sci-Fi Rose Intro</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
   <style>
     body {
@@ -17,29 +17,22 @@
       align-items: center;
       justify-content: center;
       min-height: 100vh;
-      overflow: hidden;
       text-align: center;
     }
 
-    .typewriter {
-      max-width: 90%;
-      width: 700px;
+    .line {
       font-size: 1.2em;
-      line-height: 1.8em;
-      white-space: pre-line;
+      margin: 5px 0;
+      white-space: nowrap;
       overflow: hidden;
-      border-right: 3px solid #0ff;
-      animation: typing 18s steps(500, end), blink 0.75s step-end infinite;
-    }
-
-    @keyframes typing {
-      from { width: 0 }
-      to { width: 100% }
+      display: inline-block;
+      border-right: 2px solid #0ff;
+      animation: blink 0.75s step-end infinite;
     }
 
     @keyframes blink {
-      from, to { border-color: transparent }
-      50% { border-color: #0ff }
+      0%, 100% { border-color: transparent; }
+      50% { border-color: #0ff; }
     }
 
     .neon-heart {
@@ -47,6 +40,7 @@
       width: 100px;
       height: 90px;
       position: relative;
+      display: none;
     }
 
     .neon-heart::before,
@@ -80,26 +74,92 @@
       100% { border-color: #ff00ff; box-shadow: 0 0 10px #ff00ff; }
     }
 
+    #startBtn {
+      font-family: 'Orbitron', sans-serif;
+      background: #00ffff;
+      color: #000;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 12px;
+      font-size: 1em;
+      cursor: pointer;
+      margin-bottom: 30px;
+      box-shadow: 0 0 15px #00ffff;
+      transition: all 0.3s ease;
+    }
+
+    #startBtn:hover {
+      background: #00cccc;
+      box-shadow: 0 0 25px #00ffff;
+    }
+
     @media (max-width: 600px) {
-      .typewriter {
+      .line {
         font-size: 1em;
       }
     }
   </style>
 </head>
 <body>
-  <div class="typewriter">
-You are a rose blooming in the silence of stars.  
-Soft in heart, but strong like galaxies.  
-Innocent like a child of stardust.  
-Honest as the sky that holds the sun.  
-Loyal as the moon follows Earth.  
-Your smile lights up constellations.  
-Your soul sings in frequencies beyond hearing.  
-A dreamer painted with cosmic kindness.  
-A beauty not just seen, but deeply felt.  
-You are the miracle this universe forgot to announce.
-  </div>
-  <div class="neon-heart"></div>
+  <button id="startBtn">Start Your Intro</button>
+  <div id="lines-container"></div>
+  <div class="neon-heart" id="heart"></div>
+
+  <audio id="typingSound" src="https://od.lk/s/MzhfMjk3MzgxNjlf/Typing%20Sound%20Effect%20%28no%20copyright%29.mp3" preload="auto" loop></audio>
+
+  <script>
+    const lines = [
+      "You are a rose blooming in the silence of stars.",
+      "Soft in heart, but strong like galaxies.",
+      "Innocent like a child of stardust.",
+      "Honest as the sky that holds the sun.",
+      "Loyal as the moon follows Earth.",
+      "Your smile lights up constellations.",
+      "Your soul sings in frequencies beyond hearing.",
+      "A dreamer painted with cosmic kindness.",
+      "A beauty not just seen, but deeply felt.",
+      "You are the miracle this universe forgot to announce."
+    ];
+
+    const container = document.getElementById("lines-container");
+    const heart = document.getElementById("heart");
+    const startBtn = document.getElementById("startBtn");
+    const typingSound = document.getElementById("typingSound");
+
+    async function typeLine(text, delay = 45) {
+      return new Promise(resolve => {
+        const div = document.createElement("div");
+        div.className = "line";
+        container.appendChild(div);
+
+        let i = 0;
+        const interval = setInterval(() => {
+          if (i < text.length) {
+            div.textContent += text[i++];
+          } else {
+            clearInterval(interval);
+            div.style.borderRight = "none";
+            resolve();
+          }
+        }, delay);
+      });
+    }
+
+    async function typeAllLines() {
+      startBtn.style.display = 'none';
+      typingSound.play();
+
+      for (const line of lines) {
+        await typeLine(line, 45);
+        await new Promise(r => setTimeout(r, 400));
+      }
+
+      typingSound.pause();
+      typingSound.currentTime = 0;
+      heart.style.display = 'block';
+    }
+
+    startBtn.addEventListener("click", typeAllLines);
+  </script>
 </body>
 </html>
